@@ -117,8 +117,6 @@ class TestCanLogin(TestCase):
         response = client.post('http://testserver{}'.format(url),
                                json={'msisdn': 254763488092, 'pin': 1212})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIsNotNone(response.json().get('session_key'))
-        self.assertIsNotNone(response.json().get('expires_in'))
 
 
 class TestCanAddProduct(TestCase):
