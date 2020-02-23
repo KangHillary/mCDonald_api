@@ -2,3 +2,4 @@ Django
 ussd-framework
 djangorestframework
 markdown
+structlog
