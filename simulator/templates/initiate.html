@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+	<div align="right">
+		<a class="btn btn-primary" type="button">Help</a>
+	</div>
+	<h3 class="form-signin-heading">
+		<span class="jumo-black">Enter your phone number:</span>
+	</h3>
+	<form method="POST" action="">
+        {% get_current_language as LANGUAGE_CODE %}
+		<p>{{ LANGUAGE_CODE }}</p>
+        {% csrf_token %}
+		<label id="Form-Title">{% trans "Language:" %}</label>
+        {{ form.language }}<br/>
+		<label id="Form-Title">{% trans "Phone number:" %}</label>
+        {{ form.phone_number }} <br/>
+		<label>Service URL:</label>
+        {{ form.service_url }} <br/>
+		<input type="submit" class="btn btn-jumo-alt" value="Submit"/>
+	</form>
+
+	<script type="text/javascript" language="javascript">
+		document.getElementById("id_phone_number").focus();
+		$(document).ready(function () {
+			$("#user_type").change(function () {
+				var option = $(this).val();
+				$("#id_phone_number").val(option);
+			});
+		});
+	</script>
+
+{% endblock %}
+

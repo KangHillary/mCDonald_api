@@ -1,0 +1,148 @@
+.container{
+    padding-top: 110pt;
+}
+.logo{
+    text-align: center;
+}
+.ussd-output {
+    background-color:#b6b6b6;
+    position: relative;
+    top: -62px;
+    z-index: -1;
+    right: 30px;
+    border-radius: 3px;
+    padding: 20px;
+}
+.ussd-output table, .ussd-output td, .ussd-output th {
+    border: 1px solid lightgray;
+}
+.ussd-output table {
+    border-collapse: collapse;
+}
+.ussd-output td, .ussd-output th {
+    padding: 5px;
+}
+.ussd-output th {
+    text-align: left;
+}
+.ussd-output table
+{
+    position:absolute;
+    left:100px;
+    top:150px;
+}
+#Sign-In {
+    color: rgba(38, 30, 38, 0.78);
+}
+#Field-Title
+{
+    color:#828181;
+}
+#devtools
+{
+
+/* Safari */
+-webkit-transform: rotate(-90deg);
+
+/* Firefox */
+-moz-transform: rotate(-90deg);
+
+/* IE */
+-ms-transform: rotate(-90deg);
+
+/* Opera */
+-o-transform: rotate(-90deg);
+
+/* Internet Explorer */
+filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+}
+
+.services {
+    margin-top: 15px;
+}
+
+.service {
+    background: none repeat scroll 0 0 #e4e4e4;
+    border-radius: 3px;
+    border-top: 5px solid #d2d6de;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    position: relative;
+    margin-left: 10px;
+    padding: 10px;
+    display: inline-block;
+}
+
+.service.mtn {
+    border-top-color: #ffcb06;
+}
+
+.service.jumo {
+    border-top-color: #181b18;
+}
+
+.service img {
+    border-radius: 50%;
+    display: inline-block;
+    height: auto;
+    max-width: 100%;
+    text-align: center;
+    max-height: 150px;
+}
+
+.service a {
+    width: 100%;
+    display: inline-block;
+}
+
+.service a:hover {
+    text-decoration: none;
+}
+
+.service .name {
+    color: #ffffff;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+.col-centered {
+    float: none !important;
+    margin: 0 auto !important;
+}
+
+.service.tigo {
+    border-top-color: #346bb3;
+}
+
+.service.airtel {
+    border-top-color: #e40414;
+}
+
+.btn-jumo {
+    background-color: #261e26;
+    border-color: rgba(231, 230, 221, 0.7);
+}
+
+.btn-jumo:hover, .btn-jumo-alt {
+    background-color: #fcd436;
+    border-color: rgba(243, 213, 27, 0.7);
+    color: #261e26;
+}
+
+.btn-jumo-alt:hover {
+    background-color: #261e26;
+    color: #e8c133;
+}
+
+.jumo-yellow {
+    color: #fcd436;
+}
+
+.jumo-black {
+    color: #261e26;
+}

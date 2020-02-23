@@ -1,0 +1,30 @@
+body {
+    background: #b8b6f3 url("../images/grid.png") repeat-x fixed 0 0;
+}
+
+.navbar {
+    background: #377320 none repeat scroll 0 0;
+    border-color: #2c2c2c;
+}
+
+.navbar, .navbar-inverse .navbar-brand {
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #377320;
+    border-color: #3e9233;
+}
+
+.btn-primary:hover {
+    background-color: #3e9233;
+    border-color: #377320;
+}
+
+.container {
+    padding-top: 25pt;
+}
+
+.col-centered {
+    margin: 5px auto !important;
+}

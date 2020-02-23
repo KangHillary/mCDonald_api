@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+    {% load static %}
+
+	<legend id="Sign-In">Sign in</legend>
+	<form class="form-horizontal" method="POST" action="" accept-charset="UTF-8">
+        {% csrf_token %}
+        {% if form.errors %}
+			<div class="alert alert-error">
+				<a class="close" data-dismiss="alert" href="#">x</a>Incorrect Username or Password!
+			</div>
+        {% endif %}
+		<div>
+			<label id="Field-Title">Username</label>
+			<br/>
+
+			<input class="form-control" type="text" id="username" name="username" placeholder="Username">
+
+			<label id="Field-Title">Password</label>
+
+			<input class="form-control" type="password" name="password" id="password" placeholder="Password">
+			<br/>
+
+		</div>
+
+		<button class="btn btn-primary" type="submit">Sign in</button>
+
+		<br/>
+
+	</form>
+
+{% endblock %}

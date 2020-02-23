@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="/static/django_ussd_static/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/django_ussd_static/css/bootstrap-responsive.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/static/django_ussd_static/css/http.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+<div class="container"> <!-- /container-->
+    {% block title %}
+
+		<div class="row">
+			<div class="logo">
+				<img src="/static/django_ussd_static/images/pedb.png" alt="image description" height="150px" width="150px">
+			</div>
+		</div>
+
+    {% endblock %}
+    {% block content %} {% endblock %}
+    {% block side %} {% endblock %}
+
+</div><!-- /container -->
+<!--<script src="https://code.jquery.com/jquery.js"></script> -->
+<script src="/static/django_ussd_static/js/bootstrap.min.js"></script>
+<script src="/static/django_ussd_static/js/http.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+	<div class="col-md-8">
+		<h3 id="Sign-In">{{ message|linebreaks }}</h3>
+		<form id="user-input" method="POST" action="">
+			{% csrf_token %}
+			{% if status  %}
+				<table>{{ form.input }}</table> <br>
+				<input class="btn btn-success" type="submit" value="Submit" />
+			{% else %}
+				<b>Session ended</b> <br /><br />
+			{% endif %}
+		 <a class="btn btn-primary" href="">Reset</a>
+		</form>
+	</div>
+{%endblock%}
+
+
+{%block side%}
+	<div class="col-md-4">
+		<div align="right" >
+			<a id="devtools" class="btn btn-primary" type="button">Dev tools</a>
+		</div>
+
+		<div class="ussd-output" style="display:none;">
+			<div>
+				<div>
+					<p>Request URL:</p>
+					<p>{{ request_url }}</p>
+				</div>
+				<div>
+					<p>POST Data:</p>
+					<p>{{ post_data }}</p>
+				</div>
+				<div>
+					<p>Response:</p>
+					<p>{{ response|safe }}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
