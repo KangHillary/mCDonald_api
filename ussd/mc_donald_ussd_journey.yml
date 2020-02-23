@@ -1,0 +1,368 @@
+initial_screen:
+    type: initial_screen
+    next_screen: HttpGetAccessToken
+    pagination_config:
+      ussd_text_limit: 200
+      more_option:
+        en: More
+      back_option:
+        en: Back
+
+HttpGetAccessToken:
+  type: http_screen
+  http_request:
+    method: post
+    url:  "http://localhost:8091/v1/ussd/request_access_token/"
+    headers:
+      content-type: application/json
+      authorization: "{{auth_header('pass', 'pass')}}"
+    verify: False
+    timeout: 30
+  session_key: access_token
+  next_screen:  WelcomeScreen
+
+
+WelcomeScreen:
+  type: menu_screen
+  text: "Welcome to MC Delivery"
+  error_message:
+    en: |
+      You have selected invalid option try again
+  options:
+      - text:
+          en: |
+             Sign In
+        next_screen: EnterPin
+      - text:
+          en: |
+            Register
+        next_screen: Register
+      - text:
+          en: |
+            Exit
+        next_screen: EndSession
+
+EnterPin:
+  type: input_screen
+  text: ''
+  next_screen: HttpValidatePin
+  input_identifier: pin
+
+HttpValidatePin:
+  type: http_screen
+  http_request:
+    method: post
+    url:  "http://localhost:8091/v1/ussd/login/"
+    json:
+      msisdn: "{{phone_number}}"
+      pin: "{{pin}}"
+    headers:
+      content-type: application/json
+      Authorization: "{{auth_token(access_token.access_token)}}"
+    verify: False
+    timeout: 30
+  session_key: validate_pin
+  next_screen:  RouteHttpValidatePin
+
+EnteredWrongPin:
+  type: menu_screen
+  text: "You have entered wrong Pin or you not registered"
+  error_message:
+    en: |
+      You have selected invalid option try again
+  options:
+      - text:
+          en: |
+             Sign In
+        next_screen: EnterPin
+      - text:
+          en: |
+            Register
+        next_screen: Register
+
+RouteHttpValidatePin:
+  type: router_screen
+  default_next_screen: EnteredWrongPin
+  router_options:
+    - expression: "{{validate_pin.status_code == 200}}"
+      next_screen: HttpGetProductCategories
+
+HttpGetProductCategories:
+  type: http_screen
+  http_request:
+    method: get
+    url:  "http://localhost:8091/v1/ussd/product_categories/"
+    headers:
+      content-type: application/json
+    verify: False
+    timeout: 30
+  session_key: product_categories
+  next_screen:  LoggedInUserOptions
+
+LoggedInUserOptions:
+  text: ''
+  type: menu_screen
+  options:
+    - text:
+        en: |
+          Start your order (cash payment only)
+      next_screen: StartOrder
+    - text:
+        en: |
+          View my cart
+      next_screen: HttpGetCartProducts
+    - text:
+        en: |
+          Update your location
+      next_screen: UpdateLocation
+    - text:
+        en: |
+          Back
+      next_screen: StartOrder
+    - text:
+        en: |
+          Home
+      next_screen: WelcomeScreen
+
+HttpGetCartProducts:
+  type: http_screen
+  http_request:
+    method: get
+    url:  "http://localhost:8091/v1/ussd/cart/items/"
+    headers:
+      content-type: application/json
+      Authorization: "{{auth_token(access_token.access_token)}}"
+      X-Session-Key: "{{validate_pin.session_key}}"
+    verify: False
+    timeout: 30
+  session_key: cart_products
+  next_screen:  ViewCart
+
+
+ViewCart:
+  type: menu_screen
+  text: ''
+  error_message:
+    en: |
+      You have selected invalid option try again
+  items:
+    text: "{{ item }}"
+    value: "{{ item }}"
+    with_items: "{{cart_products.content}}"
+    session_key: cart
+    next_screen: StartOrder
+
+UpdateLocation:
+  type: quit_screen
+  text:
+    en: |
+      Please visit https://example.mcdee.com
+
+EndSession:
+  type: quit_screen
+  text: ''
+
+StartOrder:
+  type: menu_screen
+  text: ''
+  error_message:
+    en: |
+      You have selected invalid option try again
+  items:
+    text: "{{ item.name }}"
+    value: "{{ item.id }}"
+    with_items: "{{product_categories.content}}"
+    session_key: category_id
+    next_screen: HttpGetProductsInCategory
+
+HttpGetProductsInCategory:
+  type: http_screen
+  http_request:
+    method: get
+    url:  "http://localhost:8091/v1/ussd/products/category/{{category_id}}/"
+    headers:
+      content-type: application/json
+      Authorization: "{{auth_token(access_token.access_token)}}"
+    verify: False
+    timeout: 30
+  session_key: products
+  next_screen:  ProductsMenu
+
+ProductsMenu:
+  type: menu_screen
+  text: ''
+  error_message:
+    en: |
+      You have selected invalid option try again
+  items:
+    text: "{{item.name}} (KES {{item.price}})"
+    value: "{{ item }}"
+    with_items: "{{products.content}}"
+    session_key: product
+    next_screen: ProductMenu
+
+ProductMenu:
+  text: ""
+  type: menu_screen
+  options:
+    - text:
+        en: |
+          Add to cart
+      next_screen: HttpAddToCart
+    - text:
+        en: |
+          View my cart
+      next_screen: HttpGetCartProducts
+    - text:
+        en: |
+          Back
+      next_screen: StartOrder
+    - text:
+        en: |
+          Home
+      next_screen: WelcomeScreen
+
+HttpAddToCart:
+  type: http_screen
+  http_request:
+    method: post
+    url:  "http://localhost:8091/v1/ussd/cart/add/"
+    headers:
+      content-type: application/json
+      Authorization: "{{auth_token(access_token.access_token)}}"
+      X-Session-Key: "{{validate_pin.session_key}}"
+    json:
+      product_id: "{{product.id}}"
+    verify: False
+    timeout: 30
+  session_key: add_to_cart
+  next_screen:  AddedToCart
+
+
+AddedToCart:
+  type: menu_screen
+  text: ''
+  error_message:
+    en: |
+      You have selected invalid option try again
+  options:
+    - text:
+        en: |
+          Finish Order
+      next_screen: HttpConfirmOrder
+    - text:
+        en: |
+          Continue Ordering
+      next_screen: StartOrder
+
+HttpConfirmOrder:
+  type: http_screen
+  http_request:
+    method: get
+    url:  "http://localhost:8091/v1/ussd/cart/checkout/"
+    headers:
+      content-type: application/json
+      Authorization: "{{auth_token(access_token.access_token)}}"
+      X-Session-Key: "{{validate_pin.session_key}}"
+    verify: False
+    timeout: 30
+  session_key: confirm_order
+  next_screen:  EndSessionOrderCreatedSuccessfully
+
+EndSessionOrderCreatedSuccessfully:
+  type: quit_screen
+  text: "{{confirm_order.message}}"
+
+Register:
+  type: menu_screen
+  text:
+    en: |
+      Register
+    default: en
+  error_message:
+    en: |
+      You have selected invalid option try again
+  options:
+      - text:
+          en: |
+             Read our mandatory terms and conditions
+        next_screen: TermsAndCondition
+      - text:
+          en: |
+            Create unique four digital pin
+        next_screen: EnterNewPin
+      - text:
+          en: |
+            Main Menu
+        next_screen: WelcomeScreen
+
+
+EnterNewPin:
+  type: input_screen
+  text: ''
+  next_screen: ReEnterNewPin
+  input_identifier: new_pin
+
+ReEnterNewPin:
+  type: input_screen
+  text: Re-enter
+  next_screen: RouteReEnterNewPin
+  input_identifier: re_new_pin
+
+ReEnterNewPinNotEqual:
+  type: input_screen
+  text: Pin does not match first pin
+  next_screen: RouteReEnterNewPin
+  input_identifier: re_new_pin
+
+RouteReEnterNewPin:
+  type: router_screen
+  default_next_screen: ReEnterNewPinNotEqual
+  router_options:
+    - expression: "{{new_pin == re_new_pin}}"
+      next_screen: HttpRegisterCustomer
+
+HttpRegisterCustomer:
+  type: http_screen
+  http_request:
+    method: post
+    url:  "http://localhost:8091/v1/ussd/register/"
+    json:
+      msisdn: "{{phone_number}}"
+      pin: "{{re_new_pin}}"
+    headers:
+      content-type: application/json
+      Authorization: "{{auth_token(access_token.access_token)}}"
+    verify: False
+    timeout: 30
+  session_key: register_customer
+  next_screen:  RegisteredSuccessfully
+
+
+RegisteredSuccessfully:
+  type: menu_screen
+  text: User created successfully
+  error_message:
+    en: |
+      You have selected invalid option try again
+  options:
+      - text:
+          en: |
+             Main Menu
+        next_screen: WelcomeScreen
+
+TermsAndCondition:
+  type: menu_screen
+  text: Please visit https://example.mcdee.com/
+  error_message:
+    en: |
+      You have selected invalid option try again
+  options:
+      - text:
+          en: |
+            Back
+        next_screen: WelcomeScreen
+      - text:
+          en: |
+            Main Menu
+        next_screen: WelcomeScreen
