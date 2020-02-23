@@ -1,0 +1,105 @@
+
+#div-login-page {
+    position: relative;
+    height:99%;
+    width:99%;
+}
+.div-row {
+    width:100%;
+    clear:both;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.div-centered {
+    position:relative;
+    margin: auto auto auto auto;
+}
+
+#div-login-container {
+    width: 300px;
+    height: 330px;
+    font-family: 'Open Sans',sans-serif;
+    border-radius:3px;
+    border: #ffcc29 solid 2px;
+    padding:15px;
+    color:#666666;
+    font-weight:300;
+    font-size: 14px;
+}
+
+#div-login-content
+{
+    position: relative;
+    height:250px;
+    width:260px;
+    margin:auto auto auto auto;
+}
+
+#div-login-logo {
+    display:inline;
+    position:relative;
+    float:left;
+   margin-right:10px;
+}
+
+#div-login-header {
+    font-family: 'Open Sans',sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 200%;
+    display:inline-block;
+    position:relative;
+    vertical-align: middle;
+    float:left;
+    color:#000;
+}
+
+.login-input{
+    width:250px;
+    height:30px;
+    border-radius:4px;
+
+}
+
+.login-button{
+    height:30px;
+    border-radius:4px;
+    background-color:#000000 ;
+    color:#fff;
+    font-size:12px;
+     border: solid 1px #000;
+}
+
+.login-button:hover{
+    color: #ffcc29;
+    background-color: #333333;
+}
+
+#btn-login-button {
+    float:right;
+    margin-right:5px;
+    position:relative;
+
+}
+
+
+.div-ruler {
+    width:45%;
+    float:left;
+    position:relative;
+    display:inline-block;
+}
+
+hr {
+    display:block;
+    border-style:dashed;
+    border-width: 1px;
+    border-color:#cccccc ;
+}
+
+.login-link {
+    padding:3px 65px 3px 65px;
+    width: 260px;
+    text-decoration: none;
+}
